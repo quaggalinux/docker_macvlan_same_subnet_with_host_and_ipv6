@@ -28,9 +28,10 @@ inet6 2a01:53c0:ff0e:2e:20c:29ff:feff:1453/64 scope global dynamic mngtmpaddr no
 #systemctl restart docker  
   
 创建容器网络模式macvlan并使用当前局域网的ip网段及公网ipv6网段，前提是必须配置好/etc/docker/daemon.json文件  
-必须加上--ipv6参数，否则即使在管理界面看到网络模式名字分配了网段，而容器实例即使指定了ipv6地址，但容器实例ipv6地址实际为空，  
-ipv6的网关参数可以不写，系统会自动指定::1，子网段不能用::/64，否则报错，也不要与已经定义的其他网络模式的网段重叠，  
---subnet：当前局域网的ip网段，--aux-address：排除本宿主机的ip地址，parent：指定使用的网卡名字  
+必须加上--ipv6参数，否则即使在管理界面看到网络模式名字分配了网段，而容器实例即使指定了ipv6地址，  
+但容器实例ipv6地址实际为空，ipv6的网关参数可以不写，系统会自动指定::1，子网段不能用::/64，否则报错，  
+也不要与已经定义的其他网络模式的网段重叠，  
+--subnet：当前局域网的ipv4网段，--aux-address：排除本宿主机的ipv4地址，parent：指定使用的网卡名字  
 #docker network create -d macvlan --ipv6 --subnet=2a01:53c0:ff0e:2e:3::/80 --subnet=10.0.0.0/24 --gateway=10.0.0.1 --aux-address="exclude_host=10.0.0.206" -o parent=ens33 ip6macvlan  
   
 检查创建是否成功  
