@@ -38,16 +38,17 @@ inet6 2a01:53c0:ff0e:2e:20c:29ff:feff:1453/64 scope global dynamic mngtmpaddr no
 #docker network ls  
   
 创建两个容器实例并使用macvlan模式，指定ipv6地址，指定IPv4地址，如果不指定的话会自动分配，  
-建议自己指定，可避免IPv4地址冲突问题，验证指定的ipv4地址是否能够与宿主机ipv4通信   
+建议自己指定，可避免IPv4地址冲突问题，创建后肯定能够与非宿主机的同局域网机器互通   
   
 #docker run -dit --restart=always --network=ip6macvlan --ip6=2a01:53c0:ff0e:2e:3::2 --ip=10.0.0.192 --name=u18ip6macvlan2 -v /data:/data ubuntu:bionic-20210827 /bin/bash -c "/etc/init.d/cron start;/etc/init.d/run;/bin/bash"  
   
 #docker run -dit --restart=always --network=ip6macvlan --ip6=2a01:53c0:ff0e:2e:3::3 --ip=10.0.0.193 --name=u18ip6macvlan3 -v /data:/data ubuntu:bionic-20210827 /bin/bash -c "/etc/init.d/cron start;/etc/init.d/run;/bin/bash"  
   
   
-无论如何宿主机的原生ipv4是不能直接和本机新创建的容器通信的，所以另外创建一个macvlan并把它设置成桥接组，  
-至于网上很多的教程都设置一个ip地址给这个桥接组，经过验证，不需要设置桥接ip地址，只要是接口up及设置了路由，  
-那么容器和宿主机就能互相通信，如果各位没有宿主机与本机容器互通需求，那么可以忽略下面的配置了，  
+以下配置目的是实现与宿主机通信，因为无论如何宿主机的原生ipv4是不能直接和本机新创建的容器通信的，
+所以另外创建一个macvlan并把它设置成桥接组，至于网上很多的教程都设置一个ip地址给这个桥接组，经过验证，
+不需要设置桥接ip地址，只要是接口up及设置了路由，那么容器和宿主机就能互相通信，
+如果各位没有宿主机与本机容器互通需求，那么可以忽略下面的配置了，
 因为这时容器已经可以和任何局域网内10.0.0.0/24网段的机器互通，除了宿主机  
   
 #ip link add link ens33 macvlan0-host type macvlan mode bridge  
