@@ -38,7 +38,7 @@ inet6 2a01:53c0:ff0e:2e:20c:29ff:feff:1453/64 scope global dynamic mngtmpaddr no
 #docker network ls  
   
 创建两个容器实例并使用macvlan模式，指定ipv6地址，指定IPv4地址，如果不指定的话会自动分配，  
-建议自己指定，可避免IPv4地址冲突问题，验证获得的ip地址及是否能够与宿主机通信，  
+建议自己指定，可避免IPv4地址冲突问题，验证指定的ipv4地址是否能够与宿主机ipv4通信   
   
 #docker run -dit --restart=always --network=ip6macvlan --ip6=2a01:53c0:ff0e:2e:3::2 --ip=10.0.0.192 --name=u18ip6macvlan2 -v /data:/data ubuntu:bionic-20210827 /bin/bash -c "/etc/init.d/cron start;/etc/init.d/run;/bin/bash"  
   
